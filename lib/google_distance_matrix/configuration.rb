@@ -9,7 +9,7 @@ module GoogleDistanceMatrix
   class Configuration
     include ActiveModel::Validations
 
-    ATTRIBUTES = %w[sensor mode avoid units language]
+    ATTRIBUTES = %w[sensor mode avoid units language departure_time]
 
     API_DEFAULTS = {
       mode: "driving",
@@ -19,6 +19,7 @@ module GoogleDistanceMatrix
     attr_accessor *ATTRIBUTES, :protocol, :logger, :lat_lng_scale
     attr_accessor :google_business_api_client_id, :google_business_api_private_key
     attr_accessor :cache
+    attr_accessor :departure_time
 
 
     validates :sensor, inclusion: {in: [true, false]}
@@ -57,6 +58,10 @@ module GoogleDistanceMatrix
 
       if google_business_api_client_id.present?
         out << ['client', google_business_api_client_id]
+      end
+
+      if departure_time.present?
+        out << ['departure_time',departure_time]
       end
 
       out
